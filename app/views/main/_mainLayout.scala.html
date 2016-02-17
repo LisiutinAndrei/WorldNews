@@ -1,0 +1,49 @@
+@(scripts: Html = Html(""), stylesheets: Html = Html(""))(content: Html)
+@account = @{
+    AccountSessionAction.get()
+}
+@newScripts = {
+@scripts
+}
+
+@newStylesheets = {
+@stylesheets
+}
+
+@_baseLayout(newScripts, newStylesheets) {
+    <header class="_mainlayout-header">
+        <div class="_mainlayout-navbar-header">
+                <!--
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    -->
+            <a class="_mainlayout-navbar-brand" href="/">World news</a>
+        </div>
+        <nav class="_mainlayout-navbar">
+            <div class="_mainlayout-navigation-buttons-wrapper">
+                <ul class="_mainlayout-navigation-buttons">
+                    <li class="active"><a href="/">Home</a></li>
+                    @if(account == null || account.getUser() == null || account.getUser().getUserID() <= 0) {
+                        <li><a href="@controllers.main.routes.AccountController.signIn()">Sign In</a></li>
+                        <li><a href="@controllers.main.routes.AccountController.signUp()">Sign Up</a></li>
+                    } else {
+                        <li><a href="@controllers.main.routes.MapController.global()">Global map</a></li>
+                        <li><a href="@controllers.main.routes.AccountController.signOut()">Sign Out</a></li>
+                    }
+                </ul>
+            </div>
+
+        </nav>
+    </header>
+
+    <div class="_mainlayout-content">
+
+    @content
+
+    </div>
+
+}

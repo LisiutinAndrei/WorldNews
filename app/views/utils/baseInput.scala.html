@@ -1,0 +1,9 @@
+@(elements: helper.FieldElements)
+<div class="input @if(elements.hasErrors) {input-has-error}">
+    <label for="@elements.id">@elements.label</label>
+    <div class="input-field">
+        @elements.input
+        <span class="input-errors">@elements.errors.mkString("; ")</span>
+        <span class="input-info" style="display: none">@elements.infos.mkString("; ")</span>
+    </div>
+</div>

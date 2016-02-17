@@ -1,0 +1,18 @@
+@import views.html.utils.baseInput
+@()
+@import views.html.main._mainLayout;
+@import helper._;
+@implicitField = @{
+    FieldConstructor(baseInput.f)
+}
+
+@scripts = {
+}
+@stylesheets = {
+}
+
+@_mainLayout(scripts, stylesheets) {
+    <p>
+        We sent you the confirmation message. Please follow the link inside of it.
+    </p>
+}

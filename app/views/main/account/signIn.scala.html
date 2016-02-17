@@ -1,0 +1,33 @@
+@import models.view.main.account.SignIn
+@import views.html.utils.baseInput
+@(logOnForm: Form[SignIn])
+@import views.html.main._mainLayout;
+@import helper._;
+@implicitField = @{
+    FieldConstructor(baseInput.f)
+}
+
+@scripts = {
+}
+@stylesheets = {
+}
+
+@_mainLayout(scripts, stylesheets) {
+
+    @helper.form(action = controllers.main.routes.AccountController.signInSubmit(), 'method -> "POST", 'id -> "loginForm") {
+
+        @if(logOnForm.hasGlobalErrors) {
+            <div class="form-global-errors">
+                <ul>
+                @for( error <- logOnForm.globalErrors) {
+                    <li class="form-global-error">@error.message</li>
+                }
+                </ul>
+            </div>
+        }
+
+        @helper.inputText(logOnForm("email"))
+        @helper.inputPassword(logOnForm("password"))
+        <input type="submit" value="Login"/>
+    }
+}

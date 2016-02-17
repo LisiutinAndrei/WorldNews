@@ -1,0 +1,34 @@
+@import models.view.main.account.SignUp
+@import views.html.utils.baseInput
+@(signUpForm: Form[SignUp])
+@import views.html.main._mainLayout;
+@import helper._;
+@implicitField = @{
+    FieldConstructor(baseInput.f)
+}
+
+@scripts = {
+}
+@stylesheets = {
+}
+
+@_mainLayout(scripts, stylesheets) {
+
+    @helper.form(action = controllers.main.routes.AccountController.signUpSubmit(), 'method -> "POST", 'id -> "signupForm") {
+
+        @if(signUpForm.hasGlobalErrors) {
+            <div class="form-global-errors">
+                <ul>
+                @for( error <- signUpForm.globalErrors) {
+                    <li class="form-global-error">@error.message</li>
+                }
+                </ul>
+            </div>
+        }
+
+        @helper.inputText(signUpForm(SignUp.FULL_NAME_FIELD))
+        @helper.inputText(signUpForm(SignUp.EMAIL_FIELD))
+        @helper.inputPassword(signUpForm(SignUp.PASSWORD_FIELD))
+        <input type="submit" value="Sign up"/>
+    }
+}

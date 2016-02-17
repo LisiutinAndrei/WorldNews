@@ -1,0 +1,24 @@
+@import views.html.utils.baseInput
+@()
+@import views.html.main._mainLayout;
+@import helper._;
+@implicitField = @{
+    FieldConstructor(baseInput.f)
+}
+
+@scripts = {
+}
+@stylesheets = {
+}
+
+@_mainLayout(scripts, stylesheets) {
+    @if(flash().get("error")) {
+        <div class="errors">
+        @flash().get("error")
+        </div>
+    } else {
+        <p>
+            Confirmation is successfull.
+        </p>
+    }
+}
