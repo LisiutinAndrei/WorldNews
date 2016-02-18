@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "georep")
-public class Geolocation {
+public abstract class Geolocation {
 
     @Id
     @Column(name = GEOLOCATION_ID_COLUMN)

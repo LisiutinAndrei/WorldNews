@@ -10,6 +10,8 @@
         <class>models.domain.orm.Actor</class>
         <class>models.domain.orm.Event</class>
         <class>models.domain.orm.Geolocation</class>
+        <class>models.domain.orm.GeolocationPoint</class>
+        <class>models.domain.orm.GeolocationPolygon</class>
         <class>models.domain.orm.Timelocation</class>
         <class>models.domain.orm.User</class>
 
@@ -17,7 +19,7 @@
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>
 
             <property name="hibernate.connection.CharSet" value="utf8"/>
             <property name="hibernate.connection.characterEncoding" value="utf8"/>

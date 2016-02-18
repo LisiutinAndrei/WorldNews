@@ -12,7 +12,7 @@ resolvers += Resolver.mavenLocal
 
 libraryDependencies ++= Seq(
   javaJpa,
-  "org.hibernate" % "hibernate-entitymanager" % "4.3.10.Final",
+  "org.hibernate" % "hibernate-entitymanager" % "5.1.0.Final",
   "org.hibernate" % "hibernate-spatial" % "5.1.0.Final",
   "org.postgresql" % "postgresql" % "9.4.1207",
   cache,
