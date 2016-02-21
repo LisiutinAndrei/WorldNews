@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "actor")
 public class Actor {
+    public static final String EVENT_ACTOR_ACTOR_ID = "a_id";
 
     @Id
     @Column(name = ACTOR_ID_COLUMN)

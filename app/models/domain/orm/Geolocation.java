@@ -1,12 +1,13 @@
 package models.domain.orm;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.vividsolutions.jts.geom.Coordinate;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "georep")
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Geolocation {
 
     @Id
@@ -22,4 +23,10 @@ public abstract class Geolocation {
         this._geolocationID = geolocationID;
         return this;
     }
+
+    @JsonProperty(value = "centroid")
+    public abstract Coordinate getLocationPoint();
+
+    @JsonProperty(value = "coordinates")
+    public abstract Coordinate[] getCoordinates();
 }

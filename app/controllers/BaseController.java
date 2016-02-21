@@ -1,9 +1,11 @@
 package controllers;
 
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import models.domain.orm.User;
 import models.utils.infrastructurePackages.accountSession.IAccountSession;
 import models.utils.infrastructurePackages.request.BaseRequestPackage;
 import models.utils.infrastructurePackages.request.IRequestPackage;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.With;
@@ -41,6 +43,11 @@ public class BaseController extends Controller {
         IAccountSession account = this._getAccountSessionOrNull();
         IRequestPackage<T> request = new BaseRequestPackage<T>(account);
         return request;
+    }
+
+    protected String _json(Object o) {
+        Json.mapper().registerModule(new Hibernate5Module());
+        return Json.stringify(Json.toJson(o));
     }
 }
 

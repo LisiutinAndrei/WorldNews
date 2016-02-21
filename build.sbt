@@ -12,8 +12,8 @@ resolvers += Resolver.mavenLocal
 
 libraryDependencies ++= Seq(
   javaJpa,
-  "org.hibernate" % "hibernate-entitymanager" % "5.1.0.Final",
-  "org.hibernate" % "hibernate-spatial" % "5.1.0.Final",
+  "org.hibernate" % "hibernate-entitymanager" % "5.0.8.Final",
+  "org.hibernate" % "hibernate-spatial" % "5.0.8.Final",
   "org.postgresql" % "postgresql" % "9.4.1207",
   cache,
   javaWs,
@@ -22,7 +22,8 @@ libraryDependencies ++= Seq(
   //encrypting tool
   "org.mindrot" % "jbcrypt" % "0.3m",
   //default play framework mailer
-  "com.typesafe.play" %% "play-mailer" % "3.0.1"
+  "com.typesafe.play" %% "play-mailer" % "3.0.1",
+  "com.fasterxml.jackson.datatype" % "jackson-datatype-hibernate5" % "2.7.1"
 )
 
 routesGenerator := InjectedRoutesGenerator
