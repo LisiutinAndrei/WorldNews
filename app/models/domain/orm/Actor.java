@@ -19,4 +19,31 @@ public class Actor {
     @Column(name = ENTITY_TYPE_COLUMN)
     private String _entityType;
     public static final String ENTITY_TYPE_COLUMN = "entity_type";
+
+    public long getActorID() {
+        return _actorID;
+    }
+
+    public Actor setActorID(long actorID) {
+        this._actorID = actorID;
+        return this;
+    }
+
+    public String getEntityName() {
+        return _entityName;
+    }
+
+    public Actor setEntityName(String entityName) {
+        this._entityName = entityName;
+        return this;
+    }
+
+    public String getEntityType() {
+        return _entityType;
+    }
+
+    public Actor setEntityType(String entityType) {
+        this._entityType = entityType;
+        return this;
+    }
 }

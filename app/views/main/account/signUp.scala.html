@@ -26,9 +26,9 @@
             </div>
         }
 
-        @helper.inputText(signUpForm(SignUp.FULL_NAME_FIELD))
-        @helper.inputText(signUpForm(SignUp.EMAIL_FIELD))
-        @helper.inputPassword(signUpForm(SignUp.PASSWORD_FIELD))
+        @helper.inputText(signUpForm(SignUp.FULL_NAME_FIELD), '_label -> "User name")
+        @helper.inputText(signUpForm(SignUp.EMAIL_FIELD), '_label -> "Email")
+        @helper.inputPassword(signUpForm(SignUp.PASSWORD_FIELD), '_label -> "Password")
         <input type="submit" value="Sign up"/>
     }
 }

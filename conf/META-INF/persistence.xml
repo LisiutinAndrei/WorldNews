@@ -12,8 +12,8 @@
         <class>models.domain.orm.EventInstance</class>
         <class>models.domain.orm.GeoInstance</class>
         <class>models.domain.orm.Geolocation</class>
-        <class>models.domain.orm.GeolocationPoint</class>
-        <class>models.domain.orm.GeolocationPolygon</class>
+        <!--<class>models.domain.orm.GeolocationPoint</class>-->
+        <!--<class>models.domain.orm.GeolocationPolygon</class>-->
         <class>models.domain.orm.Keyword</class>
         <class>models.domain.orm.Provenance</class>
         <class>models.domain.orm.TimeInstance</class>

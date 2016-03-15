@@ -26,8 +26,8 @@
             </div>
         }
 
-        @helper.inputText(logOnForm("email"))
-        @helper.inputPassword(logOnForm("password"))
+        @helper.inputText(logOnForm(SignIn.EMAIL_FIELD), '_label -> "Email")
+        @helper.inputPassword(logOnForm(SignIn.PASSWORD_FIELD), '_label -> "Password")
         <input type="submit" value="Login"/>
     }
 }

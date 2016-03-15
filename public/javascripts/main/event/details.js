@@ -1,16 +1,25 @@
 main = {};
-main.map = {};
-main.map.global = (function () {
+main.event = {};
+main.event.details = (function () {
 
     var _map = null;
     var _markersArray = [];
 
-    var init = function () {
-        loadMap();
+    var init = function (event) {
+        event = JSON.parse(event.replace(/&quot;/g, '"'));
+        var centroid = event.geolocation.centroid;
+        var coordinates = event.geolocation.coordinates;
+
+        loadMap(centroid.x, centroid.y);
+        if (coordinates.length == 1) {
+            addMarker(coordinates[0].x, coordinates[0].y, event.provenance.source);
+        } else {
+            addPolygon(coordinates);
+        }
     };
 
-    var loadMap = function () {
-        var ge = new google.maps.LatLng(51.0532, 31.83);
+    var loadMap = function (latitude, longtitude) {
+        var ge = new google.maps.LatLng(latitude, longtitude);
         var mapOptions = {
             minZoom: 4,
             zoom: 5,
@@ -18,15 +27,6 @@ main.map.global = (function () {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         _map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        _map.addListener('idle', function () {
-            loadEvents();
-        });
-
-        _map.addListener('zoom_changed', function () {
-            loadEvents();
-        });
-
     };
 
     var addMarker = function (latitude, longtitude, info) {
@@ -44,6 +44,26 @@ main.map.global = (function () {
             infowindow.open(_map, marker);
         });
         _markersArray.push(marker);
+    };
+
+    var addPolygon = function (coordinates) {
+        var latLongCoords = [];
+        $.each(coordinates, function (index, e) {
+            latLongCoords.push({
+                lat: e.x,
+                lng: e.y
+            });
+        });
+
+        var polygon = new google.maps.Polygon({
+            paths: latLongCoords,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+        polygon.setMap(_map);
     };
 
     // Deletes all markers in the array by removing references to them
@@ -136,8 +156,7 @@ main.map.global = (function () {
             deleteAllMarkers();
             $.each(json.responseData, function (index, e) {
                 var centroid = e.geolocation.centroid;
-                var url = "/event/details/" + e.eventID;
-                addMarker(centroid.x, centroid.y,  "<a href=\"" + url + "\">" + e.provenance.source + "</a>");
+                addMarker(centroid.x, centroid.y, e.provenance.source);
             });
         }).fail(function () {
             console.log('Error: ajax call failed.');
@@ -151,8 +170,3 @@ main.map.global = (function () {
         loadEvents: loadEvents
     };
 }());
-
-$(document).ready(function () {
-    main.map.global.init();
-    //main.map.global.loadEvents();
-});
