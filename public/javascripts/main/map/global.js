@@ -109,8 +109,8 @@ main.map.global = (function () {
         var lng1 = _map.getBounds().getSouthWest().lng();
 
         var data = {
-            startDate: startDate,
-            endDate: endDate,
+            startDate: startDate == null ? null : startDate.toISOString(),
+            endDate: endDate == null ? null : endDate.toISOString(),
             minLatitude: lat1 >= lat0 ? lat0 : lat1,
             maxLatitude: lat1 >= lat0 ? lat1 : lat0,
             minLongtitude: lng1 >= lng0 ? lng0 : lng1,
