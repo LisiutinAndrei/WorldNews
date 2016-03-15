@@ -23,9 +23,9 @@ main.map.global = (function () {
             loadEvents();
         });
 
-        _map.addListener('zoom_changed', function () {
-            loadEvents();
-        });
+        //_map.addListener('zoom_changed', function () {
+        //    loadEvents();
+        //});
 
     };
 
