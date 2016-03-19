@@ -1,4 +1,5 @@
 @import views.html.utils.baseInput
+@import models.view.MainNavigationItem
 @()
 @import views.html.main._mainLayout;
 @import helper._;
@@ -11,7 +12,7 @@
 @stylesheets = {
 }
 
-@_mainLayout(scripts, stylesheets) {
+@_mainLayout(scripts, stylesheets, MainNavigationItem.Account) {
     <p>
         We sent you the confirmation message. Please follow the link inside of it.
     </p>

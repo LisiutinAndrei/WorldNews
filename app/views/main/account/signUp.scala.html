@@ -1,4 +1,5 @@
 @import models.view.main.account.SignUp
+@import models.view.MainNavigationItem
 @import views.html.utils.baseInput
 @(signUpForm: Form[SignUp])
 @import views.html.main._mainLayout;
@@ -12,7 +13,7 @@
 @stylesheets = {
 }
 
-@_mainLayout(scripts, stylesheets) {
+@_mainLayout(scripts, stylesheets, MainNavigationItem.Account) {
 
     @helper.form(action = controllers.main.routes.AccountController.signUpSubmit(), 'method -> "POST", 'id -> "signupForm") {
 

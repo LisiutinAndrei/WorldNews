@@ -21,7 +21,7 @@ public class AccountSessionAction extends Action.Simple {
 
     //    @Inject
     protected CacheApi _cache;
-    protected static final String ACCOUNT_SESSION_ID_NAME = "uuid";
+    public static final String ACCOUNT_SESSION_ID_NAME = "uuid";
     protected static final String ACCOUNT_SESSION_CONTEXT_NAME = "_accountSession_";
 
     protected final String _getAccountSessionKey(Http.Context context) {

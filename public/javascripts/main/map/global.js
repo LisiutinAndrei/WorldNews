@@ -137,7 +137,7 @@ main.map.global = (function () {
             $.each(json.responseData, function (index, e) {
                 var centroid = e.geolocation.centroid;
                 var url = "/event/details/" + e.eventID;
-                addMarker(centroid.x, centroid.y,  "<a href=\"" + url + "\">" + e.provenance.source + "</a>");
+                addMarker(centroid.x, centroid.y,  "<a href=\"" + url + "\">" + e.name + "</a>");
             });
         }).fail(function () {
             console.log('Error: ajax call failed.');

@@ -34,8 +34,11 @@ public class UserRepository implements IUserRepository {
         List<User> users = (List<User>) this._entityManager.createQuery("FROM models.domain.orm.User u WHERE u._userID = :userID")
                 .setParameter("userID", id)
                 .getResultList();
-
-        return users.size() == 1 ? users.get(0) : null;
+        User obj = users.size() == 1 ? users.get(0) : null;
+//        if (obj != null) {
+//            obj.setPasswordEncrypted("");
+//        }
+        return obj;
     }
 
     protected List<ValidationException> validate(User obj) {
@@ -83,6 +86,7 @@ public class UserRepository implements IUserRepository {
         } else {
             this._entityManager.merge(obj);
         }
+//        obj.setPasswordEncrypted("");
         return obj;
     }
 
@@ -130,6 +134,7 @@ public class UserRepository implements IUserRepository {
         }
 
         boolean pass = this._encryptionProvider.checkPassword(password, user.getPasswordEncrypted());
+//        user.setPasswordEncrypted("");
         return pass ? user : null;
     }
 

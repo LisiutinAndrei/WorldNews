@@ -2,7 +2,11 @@ package models.business.main;
 
 import _infrastructure.IoC;
 import models.business.BaseBusinessLogic;
+import models.domain.main.EventDomainLogic;
+import models.domain.main.UserDomainLogic;
+import models.domain.orm.Event;
 import models.domain.orm.User;
+import models.domain.orm.UserEvent;
 import models.domain.repositories.IUserRepository;
 import models.utils.exceptions.ValidationException;
 import models.utils.exceptions.ValidationSummaryException;
@@ -121,5 +125,34 @@ public class AccountBusinessLogic extends BaseBusinessLogic {
 
         return this.<User>_createResponse(account)
                 .setResponseData(user);
+    }
+
+    public IResponsePackage<User> getUserWithEventsByID(IRequestPackage<Long> request) {
+        IAccountSession account = request.getAccountSession();
+        long userID = request.getRequestData();
+
+        User user = new UserDomainLogic().getUserWithEventsByID(userID);
+        return this.<User>_createResponse(account)
+                .setResponseData(user);
+    }
+
+    public IResponsePackage<UserEvent> visitEvent(IRequestPackage<Long> request) {
+        IAccountSession account = request.getAccountSession();
+        if (account == null || !account.isUserLoggedIn()) {
+            return this.<UserEvent>_createResponse(account)
+                    .setResponseData(null);
+        }
+        long eventID = request.getRequestData();
+        User user = account.getUser();
+        Event event = new EventDomainLogic().getEventByID(eventID);
+
+        UserEvent ue = new UserEvent()
+                .setDate(new Date())
+                .setEvent(event)
+                .setUser(user);
+
+        ue = new UserDomainLogic().saveUserEvent(ue);
+        return this.<UserEvent>_createResponse(account)
+                .setResponseData(ue);
     }
 }

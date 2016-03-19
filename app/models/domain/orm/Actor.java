@@ -1,9 +1,15 @@
 package models.domain.orm;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "actor")
+@JsonIdentityInfo(scope=Actor.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "_id")
 public class Actor {
     public static final String EVENT_ACTOR_ACTOR_ID = "a_id";
 
@@ -19,6 +25,11 @@ public class Actor {
     @Column(name = ENTITY_TYPE_COLUMN)
     private String _entityType;
     public static final String ENTITY_TYPE_COLUMN = "entity_type";
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = Event.ACTORS_MANYTOMANY_FIELD)
+    private List<Event> _events = new ArrayList<Event>();
+
+
 
     public long getActorID() {
         return _actorID;
@@ -44,6 +55,15 @@ public class Actor {
 
     public Actor setEntityType(String entityType) {
         this._entityType = entityType;
+        return this;
+    }
+
+    public List<Event> getEvents() {
+        return this._events;
+    }
+
+    public Actor setEvents(List<Event> events) {
+        this._events = events;
         return this;
     }
 }

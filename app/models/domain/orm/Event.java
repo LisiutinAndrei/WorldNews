@@ -1,12 +1,17 @@
 package models.domain.orm;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
 @Table(name = Event.EVENT_TABLE)
+@JsonIdentityInfo(scope=Event.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "_id")
 public class Event implements Serializable {
     public static final String EVENT_TABLE = "event";
     public static final String EVENT_ACTOR_TABLE = "eventactor";
@@ -18,6 +23,10 @@ public class Event implements Serializable {
     @Column(name = EVENT_ID_COLUMN)
     private long _eventID;
     public static final String EVENT_ID_COLUMN = "event_id";
+
+    @Column(name = EVENT_NAME_COLUMN)
+    private String _name;
+    public static final String EVENT_NAME_COLUMN = "name";
 
     //    @Column(name = GEOLOCATION_ID_COLUMN)
 //    private long _geolocationID;
@@ -50,10 +59,14 @@ public class Event implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = Event.EVENT_KEYWORD_TABLE, joinColumns = @JoinColumn(name = Event.EVENT_KEYWORD_EVENT_ID), inverseJoinColumns = @JoinColumn(name = Keyword.EVENT_KEYWORD_KEYWORD_ID))
     private List<Keyword> _keywords = new ArrayList<Keyword>();
+    public static final String KEYWORDS_MANYTOMANY_FIELD = "_keywords";
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = Event.EVENT_ACTOR_TABLE, joinColumns = @JoinColumn(name = Event.EVENT_ACTOR_EVENT_ID), inverseJoinColumns = @JoinColumn(name = Actor.EVENT_ACTOR_ACTOR_ID))
     private List<Actor> _actors = new ArrayList<Actor>();
+    public static final String ACTORS_MANYTOMANY_FIELD = "_actors";
+
+
 
     public long getEventID() {
         return _eventID;
@@ -143,5 +156,21 @@ public class Event implements Serializable {
     public Event setActors(List<Actor> actors) {
         this._actors = actors;
         return this;
+    }
+
+    public String getName() {
+        return this._name;
+    }
+
+    public Event setName(String name) {
+        this._name = name;
+        return this;
+    }
+
+    public static class EventTimeComparator implements Comparator<Event> {
+        @Override
+        public int compare(Event o1, Event o2) {
+            return o1.getTimelocation().getBeginDate().compareTo(o2.getTimelocation().getBeginDate());
+        }
     }
 }

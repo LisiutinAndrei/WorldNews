@@ -9,4 +9,5 @@ public interface IAccountSession {
     IAccountSession setUUID(UUID uuid);
     User getUser();
     IAccountSession setUser(User user);
+    boolean isUserLoggedIn();
 }

@@ -1,18 +1,12 @@
 package models.domain.main;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
 import models.domain.BaseDomainLogic;
 import models.domain.orm.Event;
-import models.view.main.map.CentredGeolocation;
-import models.view.main.map.MapFilterRequest;
+import models.domain.orm.EventInstance;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class EventDomainLogic extends BaseDomainLogic {
 
@@ -40,6 +34,7 @@ public class EventDomainLogic extends BaseDomainLogic {
                         "INNER JOIN e._provenance p " +
                         "INNER JOIN e._actors a " +
                         "INNER JOIN e._keywords k " +
+                        "INNER JOIN e._eventInstances ei " +
                         "WHERE e._eventID = :eventID"
                 , Object[].class);
         query.setParameter("eventID", eventID);
@@ -49,13 +44,52 @@ public class EventDomainLogic extends BaseDomainLogic {
             throw new RuntimeException("Event not found!");
         }
 
-        Event event =(Event) (list.get(0)[0]);
+        Event event = (Event) (list.get(0)[0]);
         event.getActors().size();
         event.getKeywords().size();
         event.getTimelocation();
         event.getGeolocation();
         event.getProvenance();
+        event.getEventInstances().size();
 
+        return event;
+    }
+
+    public EventInstance getEventinstanceByID(long eventInstanceID) {
+        EventInstance events = null;
+
+        events = this._runSqlAction((em) -> {
+            return this._getEventinstanceByIDSql(em, eventInstanceID);
+        });
+
+        return events;
+    }
+
+    private EventInstance _getEventinstanceByIDSql(EntityManager em, long eventInstanceID) {
+
+        TypedQuery<Object[]> query = em.createQuery(
+                "SELECT ei, e, gi, ti, g, t, tip, gip " +
+                        "FROM models.domain.orm.EventInstance ei " +
+                        "INNER JOIN ei._event e " +
+                        "INNER JOIN ei._geoInstance gi " +
+                        "INNER JOIN ei._timeInstance ti " +
+                        "INNER JOIN gi._geolocation g " +
+                        "INNER JOIN ti._timelocation t " +
+                        "INNER JOIN ti._provenance tip " +
+                        "INNER JOIN gi._provenance gip " +
+                        "WHERE ei._eventInstanceID = :eventInstanceID"
+                , Object[].class);
+        query.setParameter("eventInstanceID", eventInstanceID);
+        List<Object[]> list = query
+                .getResultList();
+        if (list.size() < 1) {
+            throw new RuntimeException("Event instance not found!");
+        }
+
+        EventInstance event = (EventInstance) (list.get(0)[0]);
+        event.getEvent();
+        event.getGeoInstance().getGeolocation();
+        event.getTimeInstance().getTimelocation();
         return event;
     }
 }

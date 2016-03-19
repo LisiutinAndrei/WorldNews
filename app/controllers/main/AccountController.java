@@ -1,8 +1,10 @@
 package controllers.main;
 
+import _infrastructure.ActionAuthenticator;
 import controllers.BaseController;
 import models.business.main.AccountBusinessLogic;
 import models.domain.orm.User;
+import models.domain.orm.UserEvent;
 import models.utils.exceptions.BaseApplicationException;
 import models.utils.exceptions.ValidationException;
 import models.utils.exceptions.ValidationSummaryException;
@@ -13,6 +15,7 @@ import models.view.main.account.SignIn;
 import models.view.main.account.SignUp;
 import play.data.Form;
 import play.mvc.Result;
+import play.mvc.Security;
 import play.twirl.api.Content;
 import views.html.main.account.signIn;
 import views.html.main.account.signUp;
@@ -134,9 +137,35 @@ public class AccountController extends BaseController {
         return ok(signUpConfirmed.render());
     }
 
+    @Security.Authenticated(ActionAuthenticator.class)
     public Result signOut() {
         this._destroyAccountSession();
         return REDIRECT_TO_INDEX();
     }
 
+    @Security.Authenticated(ActionAuthenticator.class)
+    public Result details() throws BaseApplicationException {
+        IAccountSession session = this._getAccountSessionOrNull();
+        if (session != null || session.isUserLoggedIn()) {
+            return this._details(session.getUser().getUserID());
+        } else {
+            throw new BaseApplicationException("User not logged in");
+        }
+    }
+
+    public Result _details(Long userID) throws BaseApplicationException {
+        IResponsePackage<User> resp = new AccountBusinessLogic().getUserWithEventsByID(this._createRequestPackage()
+                .setRequestData(userID));
+        User event = resp.getResponseData();
+        Form<User> eventForm = form(User.class).fill(event);
+        flash("userJson", this._json(event));
+        return ok(views.html.main.account.details.render(eventForm));
+    }
+
+    @Security.Authenticated(ActionAuthenticator.class)
+    public Result visitEvent(Long eventID) {
+        IResponsePackage<UserEvent> resp = new AccountBusinessLogic().visitEvent(this._createRequestPackage()
+                .setRequestData(eventID));
+        return ok(this._json(resp));
+    }
 }

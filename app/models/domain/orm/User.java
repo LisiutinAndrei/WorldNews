@@ -1,10 +1,9 @@
 package models.domain.orm;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = User.USER_TABLE)
@@ -12,6 +11,7 @@ public class User {
     public static final String USER_TABLE = "worldnews_user";
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = USER_ID_COLUMN)
     private long _userID;
     public static final String USER_ID_COLUMN = "user_id";
@@ -39,6 +39,9 @@ public class User {
     @Column(name = CONFIRMED_COLUMN)
     private boolean _confirmed;
     public static final String CONFIRMED_COLUMN = "is_confirmed";
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = UserEvent.USER_FIELD)
+    private List<UserEvent> _userEvents = new ArrayList<UserEvent>();
 
     public long getUserID() {
         return _userID;
@@ -100,6 +103,15 @@ public class User {
 
     public User setConfirmed(boolean confirmed) {
         this._confirmed = confirmed;
+        return this;
+    }
+
+    public List<UserEvent> getUserEvents() {
+        return this._userEvents;
+    }
+
+    public User setUserEvents(List<UserEvent> userEvents) {
+        this._userEvents = userEvents;
         return this;
     }
 }

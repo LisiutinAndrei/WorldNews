@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 
 public class BaseDomainLogic {
 
-    //    @Inject
     public IRepositoriesFactory _repositoriesFactory;
 
     public BaseDomainLogic() {

@@ -1,9 +1,6 @@
 package models.domain.orm;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "geoinstance")
@@ -26,14 +23,22 @@ public class GeoInstance {
     private String _coveredText;
     public static final String COVERED_TEXT_COLUMN = "covered_text_g";
 
-    @Column(name = PROVENANCE_ID_COLUMN)
-    private long _provenanceID;
+//    @Column(name = PROVENANCE_ID_COLUMN)
+//    private long _provenanceID;
     public static final String PROVENANCE_ID_COLUMN = "pv_id";
 
-    @Column(name = GEOLOCATION_ID_COLUMN)
-    private long _geolocationID;
+//    @Column(name = GEOLOCATION_ID_COLUMN)
+//    private long _geolocationID;
     public static final String GEOLOCATION_ID_COLUMN = "g_id";
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = GeoInstance.GEOLOCATION_ID_COLUMN)
+    private Geolocation _geolocation = null;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = GeoInstance.PROVENANCE_ID_COLUMN)
+    private Provenance _provenance = null;
 
     public long getGeoInstanceID() {
         return this._geoInstanceID;
@@ -71,21 +76,39 @@ public class GeoInstance {
         return this;
     }
 
-    public long getProvenanceID() {
-        return this._provenanceID;
+//    public long getProvenanceID() {
+//        return this._provenanceID;
+//    }
+//
+//    public GeoInstance setProvenanceID(long provenanceID) {
+//        this._provenanceID = provenanceID;
+//        return this;
+//    }
+
+    public Geolocation getGeolocation() {
+        return this._geolocation;
     }
 
-    public GeoInstance setProvenanceID(long provenanceID) {
-        this._provenanceID = provenanceID;
+    public GeoInstance setGeolocation(Geolocation geolocation) {
+        this._geolocation = geolocation;
         return this;
     }
 
-    public long getGeolocationID() {
-        return this._geolocationID;
+    public Provenance getPprovenance() {
+        return this._provenance;
     }
 
-    public GeoInstance setGeolocationID(long geolocationID) {
-        this._geolocationID = geolocationID;
+    public GeoInstance setProvenance(Provenance provenance) {
+        this._provenance = provenance;
         return this;
     }
+
+//    public long getGeolocationID() {
+//        return this._geolocationID;
+//    }
+//
+//    public GeoInstance setGeolocationID(long geolocationID) {
+//        this._geolocationID = geolocationID;
+//        return this;
+//    }
 }

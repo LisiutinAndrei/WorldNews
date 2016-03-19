@@ -26,12 +26,17 @@ public class AccountSession implements IAccountSession {
 
     @Override
     public User getUser() {
-        return _user;
+        return this._user;
     }
 
     @Override
     public IAccountSession setUser(User user) {
         this._user = user;
         return this;
+    }
+
+    @Override
+    public boolean isUserLoggedIn() {
+        return this.getUser() != null && this.getUser().getUserID() > 0 && this.getUser().isConfirmed();
     }
 }

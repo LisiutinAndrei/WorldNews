@@ -1,0 +1,46 @@
+@import models.domain.orm.User
+@import models.view.MainNavigationItem
+@import views.html.utils.baseInput
+@(userForm: Form[User])
+@import views.html.main._mainLayout;
+@import helper._;
+@implicitField = @{
+    FieldConstructor(baseInput.f)
+}
+
+@scripts = {
+}
+@stylesheets = {
+}
+
+@_mainLayout(scripts, stylesheets, MainNavigationItem.Account) {
+    <div class="row">
+        <div class="col-md-12">
+            <div class="property main-property"> Full name: @userForm.get.getFullName</div>
+            <div class="property">Email: @userForm.get.getEmail</div>
+            <div class="property">User since: @userForm.get.getCreationDate.format("dd.MM.yyyy HH:mm:ss")</div>
+            <div class="property">Email is confirmed: @userForm.get.isConfirmed.toString</div>
+        </div>
+        <div class="col-md-4">
+            <div class="property main-property">Last 10 viewed events:</div>
+            <div class="search-results">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol>
+                        @for(event <- userForm.get.getUserEvents) {
+                            <li>
+                                <div class="search-result-item">
+                                    <div class="search-result-item-name">
+                                        <a href="@controllers.main.routes.EventController.details(event.getEvent.getEventID)">@event.getEvent.getName </a>
+                                    </div>
+                                    <div class="search-result-item-type">Time: @event.getDate.format("dd.MM.yyyy HH:mm:ss")</div>
+                                </div>
+                            </li>
+                        }
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

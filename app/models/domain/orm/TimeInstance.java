@@ -1,9 +1,6 @@
 package models.domain.orm;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "timeinstance")
@@ -26,14 +23,22 @@ public class TimeInstance {
     private String _coveredText;
     public static final String COVERED_TEXT_COLUMN = "covered_text_t";
 
-    @Column(name = PROVENANCE_ID_COLUMN)
-    private long _provenanceID;
+    //    @Column(name = PROVENANCE_ID_COLUMN)
+//    private long _provenanceID;
     public static final String PROVENANCE_ID_COLUMN = "pv_id";
 
-    @Column(name = TIMELOCATION_ID_COLUMN)
-    private long _timelocationID;
+    //    @Column(name = TIMELOCATION_ID_COLUMN)
+//    private long _timelocationID;
     public static final String TIMELOCATION_ID_COLUMN = "t_id";
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = TimeInstance.TIMELOCATION_ID_COLUMN)
+    private Timelocation _timelocation = null;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = TimeInstance.PROVENANCE_ID_COLUMN)
+    private Provenance _provenance = null;
 
     public String getCoveredText() {
         return this._coveredText;
@@ -44,14 +49,14 @@ public class TimeInstance {
         return this;
     }
 
-    public long getProvenanceID() {
-        return this._provenanceID;
-    }
-
-    public TimeInstance setProvenanceID(long provenanceID) {
-        this._provenanceID = provenanceID;
-        return this;
-    }
+//    public long getProvenanceID() {
+//        return this._provenanceID;
+//    }
+//
+//    public TimeInstance setProvenanceID(long provenanceID) {
+//        this._provenanceID = provenanceID;
+//        return this;
+//    }
 
     public long getTimeInstanceID() {
         return this._timeInstanceID;
@@ -80,12 +85,30 @@ public class TimeInstance {
         return this;
     }
 
-    public long getTimelocationID() {
-        return this._timelocationID;
+    public Timelocation getTimelocation() {
+        return this._timelocation;
     }
 
-    public TimeInstance setTimelocationID(long timelocationID) {
-        this._timelocationID = timelocationID;
+    public TimeInstance setTimelocation(Timelocation timelocation) {
+        this._timelocation = timelocation;
         return this;
     }
+
+    public Provenance getPprovenance() {
+        return this._provenance;
+    }
+
+    public TimeInstance setProvenance(Provenance provenance) {
+        this._provenance = provenance;
+        return this;
+    }
+
+//    public long getTimelocationID() {
+//        return this._timelocationID;
+//    }
+//
+//    public TimeInstance setTimelocationID(long timelocationID) {
+//        this._timelocationID = timelocationID;
+//        return this;
+//    }
 }

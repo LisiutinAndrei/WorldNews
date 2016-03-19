@@ -12,10 +12,11 @@ main.event.details = (function () {
 
         loadMap(centroid.x, centroid.y);
         if (coordinates.length == 1) {
-            addMarker(coordinates[0].x, coordinates[0].y, event.provenance.source);
+            addMarker(coordinates[0].x, coordinates[0].y, event.name);
         } else {
             addPolygon(coordinates);
         }
+        visitEvent(event.eventID);
     };
 
     var loadMap = function (latitude, longtitude) {
@@ -156,8 +157,31 @@ main.event.details = (function () {
             deleteAllMarkers();
             $.each(json.responseData, function (index, e) {
                 var centroid = e.geolocation.centroid;
-                addMarker(centroid.x, centroid.y, e.provenance.source);
+                addMarker(centroid.x, centroid.y, e.name);
             });
+        }).fail(function () {
+            console.log('Error: ajax call failed.');
+        });
+    };
+
+    var visitEvent = function (eventID) {
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: {},
+            url: '/account/visitEvent/' + eventID
+        }).done(function (json) {
+            if (!json || !json.responseCode || json.responseCode != 'OK') {
+                console.log('Error: ajax response is empty.');
+                return;
+            }
+
+            if (json.responseData) {
+                console.log("Visited " + eventID);
+                return;
+            }
+
         }).fail(function () {
             console.log('Error: ajax call failed.');
         });

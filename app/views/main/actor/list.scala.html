@@ -1,0 +1,75 @@
+@import models.view.main.actor.ActorsPaged
+@import models.view.main.actor.ActorFilter
+@import models.view.MainNavigationItem
+@import views.html.utils.baseInput
+@(Model: ActorsPaged)
+@import views.html.main._mainLayout;
+@import helper._; var lastindex = 0
+@implicitField = @{
+    FieldConstructor(baseInput.f)
+}
+
+@scripts = {
+    <script src="@routes.Assets.versioned("javascripts/main/actor/list.js")" type="text/javascript" ></script>
+}
+@stylesheets = {
+}
+
+@_mainLayout(scripts, stylesheets, MainNavigationItem.Actors) {
+    <div class="row">
+        <div class="col-md-4">
+        @helper.form(action = controllers.main.routes.ActorController.list(), 'method -> "POST", 'class -> "search", 'id -> "actorsSearchForm") {
+
+            @if(Model.form.hasGlobalErrors) {
+                <div class="form-global-errors">
+                    <ul>
+                    @for(error <- Model.form.globalErrors) {
+                        <li class="form-global-error">@error.message</li>
+                    }
+                    </ul>
+                </div>
+            }
+            @helper.inputText(Model.form(ActorFilter.NAME_FIELD), '_label -> "Actor name", 'class -> "search-field")
+            <input type="hidden" value="1" id="page" name="page" />
+            <input type="hidden" value="@Model.paging.itemsPerPage" id="itemsPerPage" name="itemsPerPage" />
+            <input type="submit" value="Search"/>
+        }
+        </div>
+    </div>
+
+    <div class="search-results">
+        <div class="row">
+            <div class="col-md-4">
+                <ul>
+                @for(actor <- Model.list) {
+                    <li>
+                        <div class="search-result-item">
+                            <div class="search-result-item-name">
+                                <a href="@controllers.main.routes.ActorController.details(actor.getActorID)">@actor.getEntityName</a>
+                            </div>
+                            <div class="search-result-item-type">Type: @actor.getEntityType</div>
+                        </div>
+                    </li>
+                }
+                </ul>
+            </div>
+        </div>
+        <div class="row pages">
+            <div class="col-md-4" id="paging">
+                <a href="page=1">First</a>
+                @for(index <- Model.getPageNumbers) {
+                    @if(index != lastindex + 1) {
+                        ...
+                    }
+                    <a @if(index == Model.paging.page) {
+                        class="page-selected"
+                    } href="page=@index">@index</a>
+                    @{
+                        lastindex = index
+                    }
+                }
+                <a href="page=@Model.getTotalPages">Last</a>
+            </div>
+        </div>
+    </div>
+}
